@@ -16,9 +16,9 @@ Public FSO As clsFSO
 
 Sub Init()
 
-    TYPE_OUTPUT = Replace(GetLeftPart(Cells(7, COL_PARA).Value, Chr(10)), " ", "")
-    RECURSIONS = Cells(8, COL_PARA).Value
-    TARGET_PATH = path(Cells(9, COL_PARA).Value)
+    TYPE_OUTPUT = TypeFunction()
+    RECURSIONS = Cells(8, COL_PARA).value
+    TARGET_PATH = path(Cells(9, COL_PARA).value)
     Set FSO = New clsFSO
     
     'FORMATS
@@ -42,4 +42,14 @@ Private Function path(pathh As String) As String
     If InStr(pathh, "\") > 0 Then
         path = pathh + "\"
         Exit Function: End If
+End Function
+
+Private Function TypeFunction() As String
+    TypeFunction = "Folders"
+    Dim ret As String: ret = Replace(GetLeftPart(Cells(7, COL_PARA).value, Chr(10)), " ", "")
+    If ret = "Files" Then
+        TypeFunction = "Files": End If
+    If ret = "Folders and Files" Then
+        TypeFunction = "Folders and Files": End If
+
 End Function

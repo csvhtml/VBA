@@ -1,4 +1,4 @@
-Attribute VB_Name = "WriteToSht_SubFolderList"
+Attribute VB_Name = "mFolderList"
 'Set a reference to Microsoft Scripting Runtime by using
 'Tools > References in the Visual Basic Editor (Alt+F11)
 
@@ -7,22 +7,21 @@ Attribute VB_Name = "WriteToSht_SubFolderList"
 ' Force the explicit delcaration of variables
 Option Explicit
 
-Sub SubFolderList()
-    Call aCONFIG.Init
+Sub FolderList()
+Debug.Print (Chr(10) & "-----------------------------------------------------" & Chr(10))
+    Call bCONFIG.Init
     
     Dim i As Integer
-    Dim Folders As Variant
-    Folders = FSO.FolderList(TARGET_PATH, 2)
-    If aCONFIG.RECURSIONS > 1 Then
-        
-    End If
-    Dim Files As Variant: Files = FSO.FileList(TARGET_PATH)
-    Dim Items As Variant: Items = ItemList_FilesInPath(TARGET_PATH)
+    Dim outputList As Variant
+    If bCONFIG.TYPE_OUTPUT = "Files" Then
+        outputList = FSO.FileList(TARGET_PATH, RECURSIONS)
+    Else
+        outputList = FSO.FolderList(TARGET_PATH, RECURSIONS): End If
+
     
-    Sheets("Tabelle1").Range(Cells(ROW_OUT_START, COL_OUT), Cells(ROW_OUT_END, COL_OUT)).Value = ""
-    For i = LBound(Folders) To UBound(Folders)
-        If i > ROW_OUT_END Then: Exit Sub
-        Sheets("Tabelle1").Cells(ROW_OUT_START + i - 1, COL_OUT).Value = Folders(i)
+    Sheets("Tabelle1").Range(Cells(ROW_OUT_START, COL_OUT), Cells(ROW_OUT_END, COL_OUT)).value = ""
+    For i = 1 To minn(UBound(outputList), ROW_OUT_END)
+        Sheets("Tabelle1").Cells(ROW_OUT_START + i - 1, COL_OUT).value = outputList(i)
     Next
     
 End Sub

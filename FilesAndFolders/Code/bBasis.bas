@@ -27,6 +27,21 @@ Function ItemList(n As Integer) As Variant
     ItemList = Items
 End Function
 
+Function PushToArr(arr As Variant, item As Variant) As Variant
+    Dim lastIndex As Integer
+    lastIndex = UBound(arr)
+    ReDim Preserve arr(lastIndex + 1)
+    arr(lastIndex + 1) = item
+    PushToArr = arr
+End Function
+
+Function IsExisting(Optional item As Variant) As Boolean
+     IsExisting = True
+     If IsMissing(item) Then
+        IsExisting = False: End If
+        
+End Function
+
 ' via CHATGPT
 Function GetRightPart(inputText As String, startingWord As String) As String
     Dim startPos As Long
@@ -60,4 +75,16 @@ Function GetLeftPart(inputText As String, endingWord As String) As String
     End If
     
     GetLeftPart = result
+End Function
+
+Function maxx(a, b) As Long
+    maxx = a
+    If a < b Then
+        maxx = b: End If
+End Function
+
+Function minn(a, b) As Long
+    minn = a
+    If a > b Then
+        minn = b: End If
 End Function

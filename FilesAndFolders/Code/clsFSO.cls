@@ -25,60 +25,57 @@ Private Sub Init(path)
     End If
     Set objFolder = objFSO.GetFolder(pathM)
     counter = 1
+
 End Sub
 
 Function FolderList(path As String, Optional Iterations As Integer = 1, Optional ByRef recursiveArr As Variant, Optional sourcePath As Variant) As Variant
-    Call Init(path)
-    Dim ret() As String
-    If objFolder.SubFolders.Count = 0 Then
-         ReDim ret(0): ret(0) = "": Exit Function: End If
+Debug.Print ("FolderList 1. Iteration: " & CStr(Iterations))
     
-    ReDim ret(1 To objFolder.SubFolders.Count)
-Debug.Print ("FolderList 1")
+    Dim retName() As Variant: ReDim retName(0)
+    If IsExisting(recursiveArr) Then
+        retName = recursiveArr: End If
+    If IsMissing(sourcePath) Then
+        sourcePath = path: End If
+    Call Init(path)
+    
+    Dim tmp As String
     For Each objSubFolder In objFolder.SubFolders
-        If IsMissing(sourcePath) Then
-            ret(counter) = objSubFolder.name
-        Else
-            ret(counter) = Replace(objSubFolder.path, sourcePath, "")
-        End If
-        counter = counter + 1
+        tmp = Replace(objSubFolder.path, sourcePath, "")
+        Debug.Print ("FolderList 2. Iteration: " & CStr(Iterations) & CStr(tmp))
+        retName = bBasis.PushToArr(retName, tmp)
+        If Iterations > 1 Then
+            retName = FolderList(sourcePath + tmp + "\", Iterations - 1, retName, sourcePath): End If
     Next objSubFolder
-Debug.Print ("FolderList 2")
-    If Iterations > 1 Then
-        For i = LBound(ret) To UBound(ret)
-            ret = FolderList(path + ret(i) + "\", Iterations - 1, ret, path)
-        Next
-    End If
-Debug.Print ("FolderList 3")
-    If IsMissing(recursiveArr) Then
-        FolderList = ret
-    Else
-        Dim rmb As Integer: rmb = UBound(recursiveArr)
-        ReDim Preserve recursiveArr(1 To UBound(recursiveArr) + UBound(ret))
-        For i = LBound(ret) To UBound(ret)
-            recursiveArr(i + rmb) = ret(i)
-        Next
-        FolderList = recursiveArr
-    End If
+    
+    FolderList = retName
 
 End Function
 
+
 'Returns a list of all files of a given path
-Function FileList(path As String) As Variant
-    Dim ret() As String
+Function FileList(path As String, Optional Iterations As Integer = 1, Optional ByRef recursiveArr As Variant, Optional sourcePath As Variant) As Variant
+    Dim folders As Variant: folders = FolderList(path, Iterations)
+    Dim retName() As Variant: ReDim retName(0)
     
     'variables
     counter = 1
-    Call Init(path)
+    Dim item As Variant
+    For i = LBound(folders) To UBound(folders)
+        Set objFolder = objFSO.GetFolder(path + folders(i))
+        For Each objFile In objFolder.Files
+            retName = bBasis.PushToArr(retName, objFile.name): Next objFile
+    Next
     
-    ReDim ret(1 To objFolder.Files.Count)
-
-    'MAIN
-    For Each objFile In objFolder.Files
-        ret(counter) = objFile.name
-        counter = counter + 1
-    Next objFile
+'    Call Init(path)
+'
+'    ReDim ret(1 To objFolder.Files.Count)
+'
+'    'MAIN
+'    For Each objFile In objFolder.Files
+'        ret(counter) = objFile.name
+'        counter = counter + 1
+'    Next objFile
     
-    FileList = ret
+    FileList = retName
 
 End Function

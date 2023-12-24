@@ -8,10 +8,10 @@ Sub VBA_Export()
     clnVBAModules_CLS.Add ("Tabelle1")
     
     clnVBAModules_BAS.Add ("aExport")
-    clnVBAModules_BAS.Add ("bConfig")
     clnVBAModules_BAS.Add ("bBasis")
+    clnVBAModules_BAS.Add ("bConfig")
     clnVBAModules_BAS.Add ("CreateHTMLPictureList")
-    clnVBAModules_BAS.Add ("WriteToSht_SubFolderList")
+    clnVBAModules_BAS.Add ("mFolderList")
 
     clnVBAModules_CLS.Add ("clsFSO")
     clnVBAModules_CLS.Add ("clsItem")

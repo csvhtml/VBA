@@ -16,11 +16,11 @@ Sub FilesInFolder()
     Dim Files As Variant: Files = FileList(TARGET_PATH)
     Dim Items As Variant: Items = ItemList_FilesInPath(TARGET_PATH)
     
-    Sheets("Tabelle1").Range(Cells(ROW_OUT_START, COL_OUT + PARA_OFFSET), Cells(ROW_OUT_END, COL_OUT + PARA_OFFSET)).Value = ""
+    Sheets("Tabelle1").Range(Cells(ROW_OUT_START, COL_OUT + PARA_OFFSET), Cells(ROW_OUT_END, COL_OUT + PARA_OFFSET)).value = ""
     For i = LBound(Items) To UBound(Items)
         If i > ROW_OUT_END * 10 Then: Exit Sub
-        Sheets("Tabelle1").Cells(ROW_OUT_START + i - 1, COL_OUT + PARA_OFFSET).Value = Items(i).name
-        Sheets("Tabelle1").Cells(ROW_OUT_START + i - 1, COL_OUT + 1 + PARA_OFFSET).Value = HTML_Path_Relative(Items(i).path + Items(i).name)
+        Sheets("Tabelle1").Cells(ROW_OUT_START + i - 1, COL_OUT + PARA_OFFSET).value = Items(i).name
+        Sheets("Tabelle1").Cells(ROW_OUT_START + i - 1, COL_OUT + 1 + PARA_OFFSET).value = HTML_Path_Relative(Items(i).path + Items(i).name)
     Next
 
 End Sub

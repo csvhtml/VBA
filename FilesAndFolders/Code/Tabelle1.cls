@@ -10,8 +10,8 @@ Attribute VB_Exposed = True
 Private Sub Worksheet_FollowHyperlink(ByVal Target As Hyperlink)
 
     
-If Target.name = "SubFolderList" Then
-    Call SubFolderList
+If Target.name = "FolderList" Then
+    Call mFolderList.FolderList
     
 ElseIf Target.name = "Pictures To HTML" Then
     Call PicturesToHTML
