@@ -12,8 +12,6 @@ Private objFolder As Scripting.Folder
 Private objSubFolder As Scripting.Folder
 Private objFile As Scripting.File
 
-Private counter As Integer
-
 
 Private Sub Init(path)
     Dim pathM As String
@@ -24,12 +22,10 @@ Private Sub Init(path)
         pathM = path
     End If
     Set objFolder = objFSO.GetFolder(pathM)
-    counter = 1
 
 End Sub
 
 Function FolderList(path As String, Optional Iterations As Integer = 1, Optional ByRef recursiveArr As Variant, Optional sourcePath As Variant) As Variant
-Debug.Print ("FolderList 1. Iteration: " & CStr(Iterations))
     
     Dim retName() As Variant: ReDim retName(0)
     If IsExisting(recursiveArr) Then
@@ -41,7 +37,6 @@ Debug.Print ("FolderList 1. Iteration: " & CStr(Iterations))
     Dim tmp As String
     For Each objSubFolder In objFolder.SubFolders
         tmp = Replace(objSubFolder.path, sourcePath, "")
-        Debug.Print ("FolderList 2. Iteration: " & CStr(Iterations) & CStr(tmp))
         retName = bBasis.PushToArr(retName, tmp)
         If Iterations > 1 Then
             retName = FolderList(sourcePath + tmp + "\", Iterations - 1, retName, sourcePath): End If
@@ -52,29 +47,16 @@ Debug.Print ("FolderList 1. Iteration: " & CStr(Iterations))
 End Function
 
 
-'Returns a list of all files of a given path
 Function FileList(path As String, Optional Iterations As Integer = 1, Optional ByRef recursiveArr As Variant, Optional sourcePath As Variant) As Variant
     Dim folders As Variant: folders = FolderList(path, Iterations)
     Dim retName() As Variant: ReDim retName(0)
     
-    'variables
-    counter = 1
     Dim item As Variant
     For i = LBound(folders) To UBound(folders)
         Set objFolder = objFSO.GetFolder(path + folders(i))
         For Each objFile In objFolder.Files
             retName = bBasis.PushToArr(retName, objFile.name): Next objFile
     Next
-    
-'    Call Init(path)
-'
-'    ReDim ret(1 To objFolder.Files.Count)
-'
-'    'MAIN
-'    For Each objFile In objFolder.Files
-'        ret(counter) = objFile.name
-'        counter = counter + 1
-'    Next objFile
     
     FileList = retName
 
