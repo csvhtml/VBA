@@ -12,16 +12,22 @@ Debug.Print (Chr(10) & "-----------------------------------------------------" &
     Call bCONFIG.Init
     
     Dim i As Integer
-    Dim outputList As Variant
+    Dim outName, outRelative, outFull As Variant
     If bCONFIG.TYPE_OUTPUT = "Files" Then
-        outputList = FSO.FileList(TARGET_PATH, RECURSIONS)
+        outName = FSO.FileList(TARGET_PATH, RECURSIONS, , , "Name")
+        outRelative = FSO.FileList(TARGET_PATH, RECURSIONS, , , "Relative")
+        outFull = FSO.FileList(TARGET_PATH, RECURSIONS, , , "Full")
     Else
-        outputList = FSO.FolderList(TARGET_PATH, RECURSIONS): End If
-
+        outName = FSO.FolderList(TARGET_PATH, RECURSIONS, , , "Name")
+        outRelative = FSO.FolderList(TARGET_PATH, RECURSIONS, , , "Relative")
+        outFull = FSO.FolderList(TARGET_PATH, RECURSIONS, , , "Full")
+    End If
     
-    Sheets("Tabelle1").Range(Cells(ROW_OUT_START, COL_OUT), Cells(ROW_OUT_END, COL_OUT)).value = ""
-    For i = 1 To minn(UBound(outputList), ROW_OUT_END)
-        Sheets("Tabelle1").Cells(ROW_OUT_START + i - 1, COL_OUT).value = outputList(i)
+    Sheets("Tabelle1").Range(Cells(ROW_OUT_START, COL_OUT), Cells(ROW_OUT_END, COL_OUT + 2)).value = ""
+    For i = 1 To minn(UBound(outName), ROW_OUT_END)
+        Sheets("Tabelle1").Cells(ROW_OUT_START + i - 1, COL_OUT).value = outName(i)
+        Sheets("Tabelle1").Cells(ROW_OUT_START + i - 1, COL_OUT + 1).value = outRelative(i)
+        Sheets("Tabelle1").Cells(ROW_OUT_START + i - 1, COL_OUT + 2).value = outFull(i)
     Next
     
 End Sub

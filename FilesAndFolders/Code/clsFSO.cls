@@ -25,21 +25,25 @@ Private Sub Init(path)
 
 End Sub
 
-Function FolderList(path As String, Optional Iterations As Integer = 1, Optional ByRef recursiveArr As Variant, Optional sourcePath As Variant) As Variant
+Function FolderList(path As String, Optional Iterations As Integer = 1, Optional ByRef recursiveArr As Variant, Optional sourcePath As Variant, _
+    Optional NameRelativeFullKey As String) As Variant
     
     Dim retName() As Variant: ReDim retName(0)
     If IsExisting(recursiveArr) Then
         retName = recursiveArr: End If
     If IsMissing(sourcePath) Then
         sourcePath = path: End If
+    If IsMissing(NameRelativeFullKey) Then
+        NameRelativeFullKey = "Path": End If
     Call Init(path)
     
-    Dim tmp As String
+    Dim tmp, nextPath As String
     For Each objSubFolder In objFolder.SubFolders
-        tmp = Replace(objSubFolder.path, sourcePath, "")
+        tmp = NameRelativeFullX(objSubFolder, NameRelativeFullKey, sourcePath)
         retName = bBasis.PushToArr(retName, tmp)
         If Iterations > 1 Then
-            retName = FolderList(sourcePath + tmp + "\", Iterations - 1, retName, sourcePath): End If
+            nextPath = NameRelativeFullX(objSubFolder, "Full")
+            retName = FolderList(nextPath + "\", Iterations - 1, retName, sourcePath, NameRelativeFullKey): End If
     Next objSubFolder
     
     FolderList = retName
@@ -47,17 +51,31 @@ Function FolderList(path As String, Optional Iterations As Integer = 1, Optional
 End Function
 
 
-Function FileList(path As String, Optional Iterations As Integer = 1, Optional ByRef recursiveArr As Variant, Optional sourcePath As Variant) As Variant
+Function FileList(path As String, Optional Iterations As Integer = 1, Optional ByRef recursiveArr As Variant, Optional sourcePath As Variant, _
+    Optional NameRelativeFullKey As String) As Variant
     Dim folders As Variant: folders = FolderList(path, Iterations)
     Dim retName() As Variant: ReDim retName(0)
-    
-    Dim item As Variant
-    For i = LBound(folders) To UBound(folders)
-        Set objFolder = objFSO.GetFolder(path + folders(i))
+    If IsMissing(sourcePath) Then
+        sourcePath = path: End If
+        
+    Dim tmp As String
+    For i = 1 To UBound(folders)
+        Set objFolder = objFSO.GetFolder(folders(i))
+        Debug.Print (objFolder.path)
         For Each objFile In objFolder.Files
-            retName = bBasis.PushToArr(retName, objFile.name): Next objFile
+            tmp = NameRelativeFullX(objFile, NameRelativeFullKey, sourcePath)
+            retName = bBasis.PushToArr(retName, tmp): Next objFile
     Next
     
     FileList = retName
+
+End Function
+
+Function NameRelativeFullX(obj As Variant, key As String, Optional sourcePath As Variant) As String
+    NameRelativeFullX = obj.path
+    If key = "Relative" Then
+        NameRelativeFullX = Replace(obj.path, sourcePath, ""): End If
+    If key = "Name" Then
+        NameRelativeFullX = obj.name: End If
 
 End Function
