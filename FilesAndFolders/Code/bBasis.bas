@@ -23,7 +23,6 @@ Function ItemList(n As Integer) As Variant
         Items(i).url = "http " & CStr(i)
     Next i
 
-    ' Return the array of Person objects
     ItemList = Items
 End Function
 
@@ -40,6 +39,10 @@ Function IsExisting(Optional item As Variant) As Boolean
      If IsMissing(item) Then
         IsExisting = False: End If
         
+End Function
+
+Function IsCharInString(searchChar As String, searchString As String) As Boolean
+    IsCharInString = InStrRev(searchString, searchChar) > 0
 End Function
 
 ' via CHATGPT
@@ -77,6 +80,29 @@ Function GetLeftPart(inputText As String, endingWord As String) As String
     GetLeftPart = result
 End Function
 
+'via ChatGPT
+Sub AddSheetIfNotExists(sheetName As String)
+    Dim ws As Worksheet
+
+    ' Check if the sheet already exists
+    On Error Resume Next
+    Set ws = Worksheets(sheetName)
+    On Error GoTo 0
+
+    ' If the sheet doesn't exist, add it
+    If ws Is Nothing Then
+        Sheets.Add(After:=Sheets(Sheets.Count)).name = sheetName
+    End If
+End Sub
+
+'via CchatGPT
+Function CellPositionA1(rowNum As Long, colNum As Long) As String
+    Dim colLetter As String
+    colLetter = Split(Cells(1, colNum).Address, "$")(1)
+    CellPositionA1 = colLetter & rowNum
+End Function
+
+
 Function maxx(a, b) As Long
     maxx = a
     If a < b Then
@@ -88,3 +114,5 @@ Function minn(a, b) As Long
     If a > b Then
         minn = b: End If
 End Function
+
+

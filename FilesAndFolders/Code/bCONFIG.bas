@@ -1,9 +1,12 @@
 Attribute VB_Name = "bCONFIG"
-Public Const ROW_OUT_START = 11  ' Row start in which the Script Output is written
-Public Const ROW_OUT_END = 9000   ' Row end in which the Script Output is written
-Public Const COL_OUT = 2    ' Col in which the Script Output is written
-Public Const COL_PARA = 2       ' Col where Script parameters are defined
-Public Const ROW_PARA_PATH = 7  ' Row of target Path Parameter
+Public Const SHEET_RUN = "run"
+Public Const SHEET_OUT = "out"
+Public Const COL_PARA = 2
+Public Const ROW_PARA = 2
+Public Const ROW_PARA_PATH = 4
+
+Public Const OUTPUT_MAX = 9000
+
 Public Const HTML_PREFIX_PATH = "Foto Album privat"  ' Source Path for relative html references of fiels/images in the html file.
 
 Public TYPE_OUTPUT As String
@@ -16,9 +19,10 @@ Public FSO As clsFSO
 
 Sub Init()
 
+    
     TYPE_OUTPUT = TypeFunction()
-    RECURSIONS = Cells(8, COL_PARA).value
-    TARGET_PATH = path(Cells(9, COL_PARA).value)
+    RECURSIONS = IterationsDetph()
+    TARGET_PATH = path(Cells(ROW_PARA_PATH, COL_PARA).value)
     Set FSO = New clsFSO
     
     'FORMATS
@@ -30,6 +34,8 @@ Sub Init()
     a(3) = "PNG"
     
     FORMATS = a
+    
+    AddSheetIfNotExists (SHEET_OUT)
 End Sub
 
 Private Function path(pathh As String) As String
@@ -46,10 +52,22 @@ End Function
 
 Private Function TypeFunction() As String
     TypeFunction = "Folders"
-    Dim ret As String: ret = Replace(GetLeftPart(Cells(7, COL_PARA).value, Chr(10)), " ", "")
+    Dim ret As String: ret = Replace(GetLeftPart(Cells(ROW_PARA, COL_PARA).value, Chr(10)), " ", "")
     If ret = "Files" Then
         TypeFunction = "Files": End If
     If ret = "Folders and Files" Then
         TypeFunction = "Folders and Files": End If
 
 End Function
+
+Private Function IterationsDetph() As Integer
+    IterationsDetph = 1
+    Dim ret As String: ret = CStr(Cells(ROW_PARA + 1, COL_PARA).value)
+    
+    If Len(ret) = 1 And IsCharInString(ret, "123456789") Then
+        IterationsDetph = CInt(ret): End If
+
+End Function
+
+
+

@@ -23,12 +23,7 @@ Debug.Print (Chr(10) & "-----------------------------------------------------" &
         outFull = FSO.FolderList(TARGET_PATH, RECURSIONS, , , "Full")
     End If
     
-    Sheets("Tabelle1").Range(Cells(ROW_OUT_START, COL_OUT), Cells(ROW_OUT_END, COL_OUT + 2)).value = ""
-    For i = 1 To minn(UBound(outName), ROW_OUT_END)
-        Sheets("Tabelle1").Cells(ROW_OUT_START + i - 1, COL_OUT).value = outName(i)
-        Sheets("Tabelle1").Cells(ROW_OUT_START + i - 1, COL_OUT + 1).value = outRelative(i)
-        Sheets("Tabelle1").Cells(ROW_OUT_START + i - 1, COL_OUT + 2).value = outFull(i)
-    Next
+    Call mOutput.WriteToSheet(outName, outRelative, outFull)
     
 End Sub
 

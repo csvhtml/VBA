@@ -5,13 +5,13 @@ Sub VBA_Export()
     Dim clnVBAModules_BAS As Collection: Set clnVBAModules_BAS = New Collection
     Dim clnVBAModules_CLS As Collection: Set clnVBAModules_CLS = New Collection
     
-    clnVBAModules_CLS.Add ("Tabelle1")
-    
     clnVBAModules_BAS.Add ("aExport")
+    clnVBAModules_BAS.Add ("aLost")
     clnVBAModules_BAS.Add ("bBasis")
     clnVBAModules_BAS.Add ("bConfig")
-    clnVBAModules_BAS.Add ("CreateHTMLPictureList")
     clnVBAModules_BAS.Add ("mFolderList")
+    clnVBAModules_BAS.Add ("mMain")
+    clnVBAModules_BAS.Add ("mOutput")
 
     clnVBAModules_CLS.Add ("clsFSO")
     clnVBAModules_CLS.Add ("clsItem")
@@ -30,3 +30,5 @@ Sub VBA_Export()
     Set clnVBAModules_BAS = Nothing
     Set clnVBAModules_CLS = Nothing
 End Sub
+
+
