@@ -9,11 +9,11 @@ Option Explicit
 
 Sub FolderList()
 Debug.Print (Chr(10) & "-----------------------------------------------------" & Chr(10))
-    Call bCONFIG.Init
+    Call bConfig.Init
     
     Dim i As Integer
     Dim outName, outRelative, outFull As Variant
-    If bCONFIG.TYPE_OUTPUT = "Files" Then
+    If bConfig.TYPE_OUTPUT = "Files" Then
         outName = FSO.FileList(TARGET_PATH, RECURSIONS, , , "Name")
         outRelative = FSO.FileList(TARGET_PATH, RECURSIONS, , , "Relative")
         outFull = FSO.FileList(TARGET_PATH, RECURSIONS, , , "Full")

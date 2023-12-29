@@ -7,7 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Private objFSO As Scripting.FileSystemObject
+Private objFSO As Scripting.FileSystemObject  ' Activate in VBA Menu: 'Extras' -> 'Verweise/references'-> 'Microsoft Scripting Runtime' to make this line work
 Private objFolder As Scripting.Folder
 Private objSubFolder As Scripting.Folder
 Private objFile As Scripting.File

@@ -18,7 +18,7 @@ Private Sub BuildMainSheet()
 
     AddSheetIfNotExists (SHEET_RUN)
     Worksheets(SHEET_RUN).Activate
-    Sheets(SHEET_RUN).Range(Cells(1, 1), Cells(100, 100)).value = ""
+    Sheets(SHEET_RUN).Range(Cells(1, 1), Cells(100, 100)).Value = ""
     Sheets(SHEET_RUN).Range("B1").Select
     ActiveSheet.Hyperlinks.Add Anchor:=Selection, Address:="", SubAddress:= _
         "run!B1", TextToDisplay:="List Folders/Files"
@@ -44,7 +44,7 @@ Private Sub BuildMainSheet()
             If InStrRev(sheetContent(i, j), "=") Then
                 Sheets(SHEET_RUN).Cells(i, j).FormulaR1C1 = sheetContent(i, j)
             Else
-                Sheets(SHEET_RUN).Cells(i, j).value = sheetContent(i, j)
+                Sheets(SHEET_RUN).Cells(i, j).Value = sheetContent(i, j)
             End If
         Next
     Next
