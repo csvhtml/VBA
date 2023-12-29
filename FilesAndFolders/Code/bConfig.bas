@@ -7,8 +7,6 @@ Public Const ROW_PARA_PATH = 4
 
 Public Const OUTPUT_MAX = 9000
 
-Public Const HTML_PREFIX_PATH = "Foto Album privat"  ' Source Path for relative html references of fiels/images in the html file.
-
 Public TYPE_OUTPUT As String
 Public RECURSIONS As Integer
 Public TARGET_PATH As String      ' Target Path to which the Scripts shall apply
