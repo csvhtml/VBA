@@ -102,6 +102,35 @@ Function CellPositionA1(rowNum As Long, colNum As Long) As String
     CellPositionA1 = colLetter & rowNum
 End Function
 
+Function maxRange(sht As Worksheet) As Range
+   Dim a, ret  As Range, col, row As Long
+   
+   Set a = sht.UsedRange: col = a.Column: row = a.row
+   Set maxRange = Range(Cells(1, 1), Cells(row + 1, col + 1))
+End Function
+
+Function SheetValues(sht As Worksheet) As Variant
+    ' when the range is assigned to a vairant variabel it becomes an 2D array with the cell values (not Formulass)
+    Set SheetValues = maxRange(sht)
+End Function
+
+Function SheetFormulas(sht As Worksheet) As Variant
+    ' in case of no formula then the cell value is taken
+    
+    Dim rng As Range, ret As Variant
+    
+    Set rng = maxRange(sht)
+    ret = maxRange(sht)
+    
+    For i = 1 To UBound(ret, 1)
+        For j = 1 To UBound(ret, 2)
+            ret(i, j) = rng.Cells(i, j).FormulaR1C1
+        Next
+    Next
+
+    SheetFormulas = ret
+End Function
+
 
 Function maxx(a, b) As Long
     maxx = a

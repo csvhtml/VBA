@@ -1,19 +1,15 @@
 Attribute VB_Name = "mMain"
 Sub runMain()
 Attribute runMain.VB_ProcData.VB_Invoke_Func = " \n14"
-    mFolderList.FolderList
+   Dim a, b As Variant
+   
+   a = bBasis.SheetValues(Worksheets("Tabelle1"))
+   b = bBasis.SheetFormulas(Worksheets("Tabelle1"))
+   
 
 End Sub
 
-'-----------------------------------------------------------------------------------
-'Code for new sheet 'run'. 'Alternative is to run 'runMain' manually within the VBA Editor
-'
-'Private Sub Worksheet_FollowHyperlink(ByVal Target As Hyperlink)
-'    If Target.name = "Create JSON File" Then
-'        Call mFolderList.FolderList: End If
-'
-'End Sub
-'-----------------------------------------------------------------------------------
+
 Private Sub BuildMainSheet()
 
     AddSheetIfNotExists (SHEET_RUN)
