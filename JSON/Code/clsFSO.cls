@@ -76,6 +76,6 @@ Function NameRelativeFullX(obj As Variant, key As String, Optional sourcePath As
     If key = "Relative" Then
         NameRelativeFullX = Replace(obj.path, sourcePath, ""): End If
     If key = "Name" Then
-        NameRelativeFullX = obj.name: End If
+        NameRelativeFullX = obj.Name: End If
 
 End Function

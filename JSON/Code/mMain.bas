@@ -2,10 +2,15 @@ Attribute VB_Name = "mMain"
 Sub runMain()
 Attribute runMain.VB_ProcData.VB_Invoke_Func = " \n14"
    Dim a, b As Variant
+   Dim wb As Workbook, sht As Worksheet
+   Call bConfig.Init
    
-   a = bBasis.SheetValues(Worksheets("Tabelle1"))
-   b = bBasis.SheetFormulas(Worksheets("Tabelle1"))
+   Set wb = Workbooks(SOURCE_FILENAME): wb.Activate
+   Set sht = wb.Worksheets(SOURCE_SHEETNAME)
+   a = bBasis.SheetValues(sht)
+   b = bBasis.SheetFormulas(sht)
    
+   WB_EGO.Activate
 
 End Sub
 
@@ -24,11 +29,15 @@ Private Sub BuildMainSheet()
     sheetContent(2, 1) = "Source Path"
     sheetContent(3, 1) = "Source Sheet"
     sheetContent(4, 1) = "Target Path"
+    sheetContent(5, 1) = "Headers" + Chr(10) + "Row [n]"
+    sheetContent(6, 1) = "Type" + Chr(10) + """[{], {], ...]"""
 
     sheetContent(1, 2) = "Create JSON File" ' keep Hyperlink
     sheetContent(2, 2) = "<sourcepath\filename>"
     sheetContent(3, 2) = "<sheetname>"
     sheetContent(4, 2) = "<targetpath\filename>"
+    sheetContent(5, 2) = "Row 0"
+    sheetContent(5, 2) = "[{}, {}, ...]"
 
     sheetContent(1, 3) = "Ego Path (for information only. Not used by script)"
     sheetContent(2, 3) = "=CELL(""dateiname"")"

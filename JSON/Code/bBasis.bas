@@ -19,7 +19,7 @@ Function ItemList(n As Integer) As Variant
 
     For i = 1 To 3
         Set Items(i) = New clsItem
-        Items(i).name = "name " & CStr(i)
+        Items(i).Name = "name " & CStr(i)
         Items(i).url = "http " & CStr(i)
     Next i
 
@@ -91,7 +91,7 @@ Sub AddSheetIfNotExists(sheetName As String)
 
     ' If the sheet doesn't exist, add it
     If ws Is Nothing Then
-        Sheets.Add(After:=Sheets(Sheets.Count)).name = sheetName
+        Sheets.Add(After:=Sheets(Sheets.Count)).Name = sheetName
     End If
 End Sub
 
@@ -105,7 +105,7 @@ End Function
 Function maxRange(sht As Worksheet) As Range
    Dim a, ret  As Range, col, row As Long
    
-   Set a = sht.UsedRange: col = a.Column: row = a.row
+   Set a = sht.UsedRange: col = a.Columns.Count: row = a.Rows.Count
    Set maxRange = Range(Cells(1, 1), Cells(row + 1, col + 1))
 End Function
 
