@@ -11,6 +11,23 @@ Function InArray(element As String, arr As Variant) As Integer
 
 End Function
 
+Function IsEqual(a As Variant, b As Variant) As Boolean
+    IsEqual = True
+    
+    If IsString(a) And IsString(b) Then
+        If Len(a) <> Len(a) Then
+            IsEqual = False: Exit Function: End If
+        For i = 1 To Len(a)
+            If Mid(a, i, 1) <> Mid(b, i, 1) Then
+                IsEqual = False: Exit Function: End If: Next
+    End If
+    
+End Function
+
+Function IsString(myVariant As Variant) As Boolean
+    IsString = (VarType(myVariant) = vbString)
+End Function
+
 
 Function ItemList(n As Integer) As Variant
     Dim Items() As clsItem
@@ -44,6 +61,11 @@ End Function
 Function IsCharInString(searchChar As String, searchString As String) As Boolean
     IsCharInString = InStrRev(searchString, searchChar) > 0
 End Function
+
+Function RemoveLastCharacters(inputString As String, n As Integer) As String
+    RemoveLastCharacters = Left(inputString, Len(inputString) - n)
+End Function
+
 
 ' via CHATGPT
 Function GetRightPart(inputText As String, startingWord As String) As String
@@ -149,7 +171,7 @@ End Function
 '######################################################################################
 
 
-Sub SaveStringAsTextFile(myString As String, filePath As String)
+Sub SaveStringAsTextFile(ByVal myString As String, filePath As String)
     Dim fileNumber As Integer
 
     ' Open the file for writing
