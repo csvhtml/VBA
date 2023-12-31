@@ -8,6 +8,7 @@ Public WB_EGO As Workbook
 
 Public SOURCE_FILENAME As String
 Public SOURCE_SHEETNAME As String
+Public TARGET_PATH As String
 Public HEADERS_JS As String
 Public TYPE_JS As String
 
@@ -17,6 +18,7 @@ Sub Init()
     Set WB_EGO = ActiveWorkbook
     SOURCE_FILENAME = Cells(ROW_PARA, COL_PARA).Value
     SOURCE_SHEETNAME = Cells(ROW_PARA + 1, COL_PARA).Value
+    TARGET_PATH = Cells(ROW_PARA + 2, COL_PARA).Value
     HEADERS_JS = TypeJS()
     TYPE_JS = HeadersJS()
     Set FSO = New clsFSO

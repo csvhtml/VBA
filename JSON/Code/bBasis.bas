@@ -144,4 +144,24 @@ Function minn(a, b) As Long
         minn = b: End If
 End Function
 
+'######################################################################################
+' File Read and Save                                                                  #
+'######################################################################################
+
+
+Sub SaveStringAsTextFile(myString As String, filePath As String)
+    Dim fileNumber As Integer
+
+    ' Open the file for writing
+    fileNumber = FreeFile
+    Open filePath For Output As fileNumber
+
+    ' Write the string to the file
+    Print #fileNumber, myString
+
+    ' Close the file
+    Close fileNumber
+End Sub
+
+
 

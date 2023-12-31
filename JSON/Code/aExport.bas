@@ -8,6 +8,7 @@ Sub VBA_Export()
     clnVBAModules_BAS.Add ("aExport")
     clnVBAModules_BAS.Add ("bBasis")
     clnVBAModules_BAS.Add ("bConfig")
+    clnVBAModules_BAS.Add ("bJSON")
     clnVBAModules_BAS.Add ("mMain")
 
     clnVBAModules_CLS.Add ("clsFSO")
