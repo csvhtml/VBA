@@ -43,6 +43,75 @@ Function ItemList(n As Integer) As Variant
     ItemList = Items
 End Function
 
+Function UBoundX(arr As Variant, n As Integer) As Long
+    UBoundX = -1
+    On Error Resume Next
+    UBoundX = UBound(arr, n)
+    On Error GoTo 0
+End Function
+
+Function LBoundX(arr As Variant, n As Integer) As Long
+    LBoundX = -1
+    On Error Resume Next
+    LBoundX = LBound(arr, n)
+    On Error GoTo 0
+End Function
+
+Function SubListFrom2D(arr As Variant, n As Integer) As Variant
+    If UBoundX(arr, 2) = -1 Then
+        SubListFrom2D = -1: Exit Function: End If
+
+    
+    Dim ret As Variant
+    ReDim ret(LBound(arr, 2) To UBound(arr, 2))
+    
+    For i = LBound(arr, 2) To UBound(arr, 2)
+        ret(i) = arr(n, i)
+    Next
+    
+    ' Return the result array
+    SubListFrom2D = ret
+End Function
+
+Function AddQuotes(var As Variant) As Variant
+    Dim str As String
+    If IsString(var) Then
+        str = CStr(var)
+        AddQuotes = AddQuotes_ToString(str): Exit Function: End If
+    
+    If LBoundX(var, 1) > -1 And LBoundX(var, 2) = -1 Then
+        AddQuotes = AddQuotes_ToList(var): Exit Function: End If
+
+    If LBoundX(var, 2) > -1 And LBound(var, 3) = -1 Then
+        Dim i, j As Integer, ret As Variant
+        ReDim ret(LBound(var, 1) To UBound(var, 1), LBound(var, 2) To UBound(var, 2))
+        For i = LBound(var, 1) To UBound(var, 1)
+            For j = LBound(var, 2) To UBound(var, 2)
+                str = CStr(var(i, j))
+                ret(i, j) = AddQuotes_ToString(str)
+            Next j
+        Next i
+    End If
+    
+    AddQuotes = ret
+End Function
+
+Private Function AddQuotes_ToString(str As String) As String
+    AddQuotes_ToString = """" & str & """"
+End Function
+
+Private Function AddQuotes_ToList(arr As Variant) As Variant
+    Dim str As String
+    Dim ret As Variant: ReDim ret(LBound(arr) To UBound(arr))
+    For i = LBound(arr) To UBound(arr)
+        str = CStr(arr(i))
+        ret(i) = AddQuotes_ToString(str)
+    Next
+    AddQuotes_ToList = ret
+End Function
+
+
+
 Function PushToArr(arr As Variant, item As Variant) As Variant
     Dim lastIndex As Integer
     lastIndex = UBound(arr)
