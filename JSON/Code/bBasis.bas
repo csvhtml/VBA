@@ -201,7 +201,7 @@ Function maxRange(sht As Worksheet) As Range
 End Function
 
 Function SheetValues(sht As Worksheet) As Variant
-    ' when the range is assigned to a vairant variabel it becomes an 2D array with the cell values (not Formulass)
+    ' when the range is assigned to a variant variable it becomes an 2D array with the cell values (not Formulass)
     Set SheetValues = maxRange(sht)
 End Function
 
@@ -254,5 +254,33 @@ Sub SaveStringAsTextFile(ByVal myString As String, filePath As String)
     Close fileNumber
 End Sub
 
+Function StringFromArray(arr As Variant) As String
+    Dim ret As String: ret = ""
+    Dim nLine As String: nLine = Chr(10)
+    Dim dem As String: dem = "|"
+    
+    For i = LBound(arr, 1) To UBound(arr, 1)
+        For j = LBound(arr, 2) To UBound(arr, 2)
+            ret = ret & arr(i, j) & dem
+        Next
+        ret = RemoveLastCharacters(ret, 1) + Chr(10)
+    Next
+    ret = RemoveLastCharacters(ret, 1)
+    
+    CSVStringFromArray = ret
+End Function
+
+Sub SaveSheetsAs(path As String, Optional Ending As String = ".csv", Optional Delimiter As String = "|")
+    Dim ws As Worksheet
+    Dim newFileName As String
+
+    ' Loop through all sheets in the workbook
+    For Each ws In ThisWorkbook.Sheets
+        'Simple Case ###################
+        newFileName = path & ws.Name & Ending
+        Call SaveStringAsTextFile(StringFromArray(SheetFormulas(ws)), newFileName)
+    Next ws
+
+End Sub
 
 

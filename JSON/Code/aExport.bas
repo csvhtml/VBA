@@ -29,7 +29,7 @@ Sub VBA_Export()
 End Sub
 
 
-Sub SaveSheetsAsCSV()
+Sub SaveSheetsAsXLCSV()
     Dim ws As Worksheet
     Dim newFileName As String
     Dim filePath As String
@@ -39,42 +39,42 @@ Sub SaveSheetsAsCSV()
 
     ' Loop through all sheets in the workbook
     For Each ws In ThisWorkbook.Sheets
-        ' Create a unique file name for each sheet
+        'Simple Case ###################
         newFileName = filePath & ws.Name & ".csv"
-
-        ' Save the sheet as a CSV file
         ws.SaveAs newFileName, xlCSV
+        
     Next ws
 
 End Sub
 
+
 Sub ImportCSVFiles()
-    Dim folderPath As String
-    Dim fileName As String
+    Dim FolderPath As String
+    Dim Filename As String
     Dim ws As Worksheet
 
     ' Set the path to the current workbook's path
-    folderPath = ThisWorkbook.path & "\"
+    FolderPath = ThisWorkbook.path & "\"
 
     ' Disable alerts to prevent prompts during file import
     Application.DisplayAlerts = False
 
     ' Loop through all CSV files in the folder
-    fileName = Dir(folderPath & "*.csv")
-    Do While fileName <> ""
+    Filename = Dir(FolderPath & "*.csv")
+    Do While Filename <> ""
         ' Create a new worksheet with the file name (without extension)
         Set ws = Sheets.Add(After:=Sheets(Sheets.Count))
-        ws.Name = Left(fileName, Len(fileName) - 4)
+        ws.Name = Left(Filename, Len(Filename) - 4)
 
         ' Import the CSV file into the new worksheet
-        With ws.QueryTables.Add(Connection:="TEXT;" & folderPath & fileName, Destination:=ws.Range("A1"))
+        With ws.QueryTables.Add(Connection:="TEXT;" & FolderPath & Filename, Destination:=ws.Range("A1"))
             .TextFileParseType = xlDelimited
-            .TextFileConsecutiveDelimiter = False
+            .TextFileOtherDelimiter = "|"
             .Refresh
         End With
 
         ' Get the next CSV file in the folder
-        fileName = Dir
+        Filename = Dir
     Loop
 
     ' Enable alerts again

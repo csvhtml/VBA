@@ -23,6 +23,7 @@ Function JSONString(var As Variant, Optional ws As String = "    ") As String
 End Function
 
 Function JSONString_List(values As Variant, ws As String, Optional nthIndent As Integer = 0) As String
+
     Dim ret As String, wsIndent As String: ret = "": wsIndent = ""
     If JSONString_List_Assert(values) = False Then
         JSONString_List = "": Exit Function: End If
@@ -38,10 +39,12 @@ Function JSONString_List(values As Variant, ws As String, Optional nthIndent As 
     ret = ret + wsIndent + "]"
 
     JSONString_List = ret
+    
 End Function
 
 
 Function JSONString_Dict(keys As Variant, values As Variant, ws As String, Optional nthIndent As Integer = 0) As String
+
     Dim ret As String, wsIndent As String: ret = "": wsIndent = ""
     If JSONString_Dict_Assert(keys, values) = False Then
         JSONString_Dict = "": Exit Function: End If
@@ -58,7 +61,14 @@ Function JSONString_Dict(keys As Variant, values As Variant, ws As String, Optio
     ret = ret + wsIndent + "}"
 
     JSONString_Dict = ret
+    
 End Function
+
+
+'######################################################################################
+' Assert                                                                              #
+'######################################################################################
+
 
 Function JSONString_List_Assert(values As Variant) As Boolean
     JSONString_List_Assert = False
