@@ -8,8 +8,10 @@ Sub VBA_Export()
     clnVBAModules_BAS.Add ("aExport")
     clnVBAModules_BAS.Add ("bBasis")
     clnVBAModules_BAS.Add ("bConfig")
+    clnVBAModules_BAS.Add ("bFileReader")
     clnVBAModules_BAS.Add ("bJSON")
     clnVBAModules_BAS.Add ("mMain")
+    clnVBAModules_BAS.Add ("xTest")
 
     clnVBAModules_CLS.Add ("clsFSO")
     
@@ -70,6 +72,7 @@ Sub ImportCSVFiles()
         With ws.QueryTables.Add(Connection:="TEXT;" & FolderPath & Filename, Destination:=ws.Range("A1"))
             .TextFileParseType = xlDelimited
             .TextFileOtherDelimiter = "|"
+            .TextFileTextQualifier = xlTextQualifierDoubleQuote
             .Refresh
         End With
 

@@ -5,17 +5,17 @@ Function JSONString(var As Variant, Optional ws As String = "    ") As String
     keys = Application.Index(arr, 1, 0)
     Dim ret As String: ret = ""
     
-    ret = ret + "[" + Chr(10)
+    ret = ret + "[" + NEWLINE
     For i = 2 To UBound(var, 1)
-        ret = ret + ws + "{" + Chr(10)
+        ret = ret + ws + "{" + NEWLINE
         For j = 1 To UBound(var, 2)
-            ret = ret + ws + ws + keys(j) + ": " + arr(i, j) + "," + Chr(10)
+            ret = ret + ws + ws + keys(j) + ": " + arr(i, j) + "," + NEWLINE
         Next
-        ret = RemoveLastCharacters(ret, 2) + Chr(10)  ' = remove comma
-        ret = ret + ws + "}," + Chr(10)
+        ret = RemoveLastCharacters(ret, 2) + NEWLINE  ' = remove comma
+        ret = ret + ws + "}," + NEWLINE
     Next
-    ret = RemoveLastCharacters(ret, 2) + Chr(10)  ' = remove comma
-    ret = ret + "]" + Chr(10)
+    ret = RemoveLastCharacters(ret, 2) + NEWLINE  ' = remove comma
+    ret = ret + "]" + NEWLINE
     
     JSONString = ret
     
@@ -31,11 +31,11 @@ Function JSONString_List(values As Variant, ws As String, Optional nthIndent As 
         wsIndent = wsIndent + ws
     Next
     
-    ret = ret + wsIndent + "[" + Chr(10)
+    ret = ret + wsIndent + "[" + NEWLINE
     For i = LBound(values) To UBound(values)
-        ret = ret + wsIndent + ws + values(i) + "," + Chr(10)
+        ret = ret + wsIndent + ws + values(i) + "," + NEWLINE
     Next
-    ret = RemoveLastCharacters(ret, 2) + Chr(10)  ' = remove last comma
+    ret = RemoveLastCharacters(ret, 2) + NEWLINE  ' = remove last comma
     ret = ret + wsIndent + "]"
 
     JSONString_List = ret
@@ -53,11 +53,11 @@ Function JSONString_Dict(keys As Variant, values As Variant, ws As String, Optio
         wsIndent = wsIndent + ws
     Next
     
-    ret = ret + wsIndent + "{" + Chr(10)
+    ret = ret + wsIndent + "{" + NEWLINE
     For i = 1 To UBound(keys)
-        ret = ret + wsIndent + ws + keys(i) + ": " + values(i) + "," + Chr(10)
+        ret = ret + wsIndent + ws + keys(i) + ": " + values(i) + "," + NEWLINE
     Next
-    ret = RemoveLastCharacters(ret, 2) + Chr(10)  ' = remove last comma
+    ret = RemoveLastCharacters(ret, 2) + NEWLINE  ' = remove last comma
     ret = ret + wsIndent + "}"
 
     JSONString_Dict = ret
@@ -222,22 +222,22 @@ End Function
 Private Function test_str() As String
     Dim ret, ws As String: ret = "": ws = "    "
     
-    ret = ret + "[" + Chr(10)
-    ret = ret + ws + "{" + Chr(10)
-    ret = ret + ws + ws + """Country"": ""Germany""," + Chr(10)
-    ret = ret + ws + ws + """City"": ""Berlin""," + Chr(10)
-    ret = ret + ws + ws + """River"": ""Spree""," + Chr(10)
-    ret = ret + ws + ws + """Person"": ""Peter""," + Chr(10)
-    ret = ret + ws + ws + """Food"": ""Bratwurst""" + Chr(10)
-    ret = ret + ws + "}," + Chr(10)
-    ret = ret + ws + "{" + Chr(10)
-    ret = ret + ws + ws + """Country"": ""France""," + Chr(10)
-    ret = ret + ws + ws + """City"": ""Paris""," + Chr(10)
-    ret = ret + ws + ws + """River"": ""Seine""," + Chr(10)
-    ret = ret + ws + ws + """Person"": ""Chanel""," + Chr(10)
-    ret = ret + ws + ws + """Food"": ""Baguette""" + Chr(10)
-    ret = ret + ws + "}" + Chr(10)
-    ret = ret + "]" + Chr(10)
+    ret = ret + "[" + NEWLINE
+    ret = ret + ws + "{" + NEWLINE
+    ret = ret + ws + ws + """Country"": ""Germany""," + NEWLINE
+    ret = ret + ws + ws + """City"": ""Berlin""," + NEWLINE
+    ret = ret + ws + ws + """River"": ""Spree""," + NEWLINE
+    ret = ret + ws + ws + """Person"": ""Peter""," + NEWLINE
+    ret = ret + ws + ws + """Food"": ""Bratwurst""" + NEWLINE
+    ret = ret + ws + "}," + NEWLINE
+    ret = ret + ws + "{" + NEWLINE
+    ret = ret + ws + ws + """Country"": ""France""," + NEWLINE
+    ret = ret + ws + ws + """City"": ""Paris""," + NEWLINE
+    ret = ret + ws + ws + """River"": ""Seine""," + NEWLINE
+    ret = ret + ws + ws + """Person"": ""Chanel""," + NEWLINE
+    ret = ret + ws + ws + """Food"": ""Baguette""" + NEWLINE
+    ret = ret + ws + "}" + NEWLINE
+    ret = ret + "]" + NEWLINE
     
     test_str = ret
 End Function

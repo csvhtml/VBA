@@ -1,4 +1,7 @@
 Attribute VB_Name = "bBasis"
+Public Const NEWLINE = vbCrLf ' = Chr(13) + Chr(10)
+
+
 Function InArray(element As String, arr As Variant) As Integer
     InArray = -1
     
@@ -15,17 +18,50 @@ Function IsEqual(a As Variant, b As Variant) As Boolean
     IsEqual = True
     
     If IsString(a) And IsString(b) Then
-        If Len(a) <> Len(a) Then
+        If Len(a) <> Len(b) Then
             IsEqual = False: Exit Function: End If
         For i = 1 To Len(a)
             If Mid(a, i, 1) <> Mid(b, i, 1) Then
                 IsEqual = False: Exit Function: End If: Next
     End If
     
+    If IsArrayXD(a, 1) And IsArrayXD(b, 1) Then
+        If UBound(a) - LBound(a) <> UBound(b) - LBound(b) Then
+            IsEqual = False: Exit Function: End If
+        If LBound(a) <> LBound(b) Then
+            IsEqual = False: Exit Function: End If
+        If UBound(a) <> UBound(b) Then
+            IsEqual = False: Exit Function: End If
+        For i = LBound(a) To UBound(a)
+            If IsNotEqual(a(i), b(i)) Then
+                IsEqual = False: Exit Function: End If: Next
+    End If
+    
+    If IsArrayXD(a, 2) And IsArrayXD(b, 2) Then
+        If LBound(a, 1) <> LBound(b, 1) Then
+            IsEqual = False: Exit Function: End If
+        If UBound(a, 1) <> UBound(b, 1) Then
+            IsEqual = False: Exit Function: End If
+        If LBound(a, 2) <> LBound(b, 2) Then
+            IsEqual = False: Exit Function: End If
+        If UBound(a, 2) <> UBound(b, 2) Then
+            IsEqual = False: Exit Function: End If
+        For i = LBound(a, 1) To UBound(a, 1)
+            For j = LBound(a, 2) To UBound(a, 2)
+                If IsNotEqual(a(i, j), b(i, j)) Then
+                    IsEqual = False: Exit Function: End If: Next: Next
+    End If
+    
+    
 End Function
 
 Function IsString(myVariant As Variant) As Boolean
     IsString = (VarType(myVariant) = vbString)
+End Function
+
+Function IsNotEqual(a As Variant, b As Variant) As Boolean
+    IsNotEqual = Not IsEqual(a, b)
+
 End Function
 
 
@@ -55,6 +91,18 @@ Function LBoundX(arr As Variant, n As Integer) As Long
     On Error Resume Next
     LBoundX = LBound(arr, n)
     On Error GoTo 0
+End Function
+
+Function IsArrayXD(arr, X As Integer) As Boolean
+    IsArrayXD = False: Dim i As Integer
+    For i = 1 To X
+        If LBoundX(arr, i) = -1 Then
+            Exit Function: End If
+    Next
+    If LBoundX(arr, X + 1) > -1 Then
+        Exit Function: End If
+        
+    IsArrayXD = True
 End Function
 
 Function SubListFrom2D(arr As Variant, n As Integer) As Variant
@@ -110,14 +158,41 @@ Private Function AddQuotes_ToList(arr As Variant) As Variant
     AddQuotes_ToList = ret
 End Function
 
-
-
 Function PushToArr(arr As Variant, item As Variant) As Variant
     Dim lastIndex As Integer
     lastIndex = UBound(arr)
     ReDim Preserve arr(lastIndex + 1)
     arr(lastIndex + 1) = item
     PushToArr = arr
+End Function
+
+Function Array_VariantToString(arr As Variant) As String()
+    Dim ret() As String
+    
+    ReDim ret(LBound(arr) To UBound(arr))
+    For i = LBound(arr) To UBound(arr)
+        ret(i) = CStr(arr(i))
+    Next
+    Array_VariantToString = ret
+End Function
+
+Function Array_ShiftIndex(arr As Variant, NewStartingIndex, Optional ReturnType As String = "Variant") As Variant
+    If IsArrayXD(arr, 1) = False Then
+        Exit Function: End If
+        
+    Dim newArray() As Variant
+    Dim size As Integer: size = UBound(arr) - LBound(arr)
+    ReDim newArray(NewStartingIndex To size + NewStartingIndex)
+
+    Dim i As Integer
+    For i = LBound(newArray) To UBound(newArray)
+        newArray(i) = arr(i + LBound(arr) - NewStartingIndex)
+    Next i
+    
+    If ReturnType = "String" Then
+        Array_ShiftIndex = Array_VariantToString(newArray): Exit Function: End If
+
+    Array_ShiftIndex = newArray
 End Function
 
 Function IsExisting(Optional item As Variant) As Boolean
@@ -234,53 +309,4 @@ Function minn(a, b) As Long
     If a > b Then
         minn = b: End If
 End Function
-
-'######################################################################################
-' File Read and Save                                                                  #
-'######################################################################################
-
-
-Sub SaveStringAsTextFile(ByVal myString As String, filePath As String)
-    Dim fileNumber As Integer
-
-    ' Open the file for writing
-    fileNumber = FreeFile
-    Open filePath For Output As fileNumber
-
-    ' Write the string to the file
-    Print #fileNumber, myString
-
-    ' Close the file
-    Close fileNumber
-End Sub
-
-Function StringFromArray(arr As Variant) As String
-    Dim ret As String: ret = ""
-    Dim nLine As String: nLine = Chr(10)
-    Dim dem As String: dem = "|"
-    
-    For i = LBound(arr, 1) To UBound(arr, 1)
-        For j = LBound(arr, 2) To UBound(arr, 2)
-            ret = ret & arr(i, j) & dem
-        Next
-        ret = RemoveLastCharacters(ret, 1) + Chr(10)
-    Next
-    ret = RemoveLastCharacters(ret, 1)
-    
-    CSVStringFromArray = ret
-End Function
-
-Sub SaveSheetsAs(path As String, Optional Ending As String = ".csv", Optional Delimiter As String = "|")
-    Dim ws As Worksheet
-    Dim newFileName As String
-
-    ' Loop through all sheets in the workbook
-    For Each ws In ThisWorkbook.Sheets
-        'Simple Case ###################
-        newFileName = path & ws.Name & Ending
-        Call SaveStringAsTextFile(StringFromArray(SheetFormulas(ws)), newFileName)
-    Next ws
-
-End Sub
-
 

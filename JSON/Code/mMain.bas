@@ -29,8 +29,8 @@ Private Sub BuildMainSheet()
     sheetContent(2, 1) = "Source Path"
     sheetContent(3, 1) = "Source Sheet"
     sheetContent(4, 1) = "Target Path"
-    sheetContent(5, 1) = "Headers" + Chr(10) + "Row [n]"
-    sheetContent(6, 1) = "Type" + Chr(10) + """[{], {], ...]"""
+    sheetContent(5, 1) = "Headers" + NEWLINE + "Row [n]"
+    sheetContent(6, 1) = "Type" + NEWLINE + """[{], {], ...]"""
 
     sheetContent(1, 2) = "Create JSON File" ' keep Hyperlink
     sheetContent(2, 2) = "<sourcepath\filename>"
