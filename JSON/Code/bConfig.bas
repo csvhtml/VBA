@@ -1,10 +1,9 @@
 Attribute VB_Name = "bConfig"
-Public Const SHEET_RUN = "runJSON"
+Public Const EGO_WB_NAME = "JSON.xlsm"
+Public Const EGO_SHT_NAME = "JSON"
 Public Const COL_PARA = 2
 Public Const ROW_PARA = 2
 Public Const ROW_PARA_PATH = 4
-
-Public WB_EGO As Workbook
 
 Public SOURCE_FILENAME As String
 Public SOURCE_SHEETNAME As String
@@ -14,15 +13,28 @@ Public TYPE_JS As String
 
 Public FSO As clsFSO
 
-Sub Init()
-    Set WB_EGO = ActiveWorkbook
-    SOURCE_FILENAME = Cells(ROW_PARA, COL_PARA).Value
+Sub Init(Optional InitSheetName As String = "")
+    If InitSheetName <> "" Then
+        Sheets(InitSheetName).Activate: End If
+        
+    Debug.Assert ActiveWorkbook.Name = EGO_WB_NAME
+    SOURCE_FILENAME = Init_Path(Cells(ROW_PARA, COL_PARA).Value)
     SOURCE_SHEETNAME = Cells(ROW_PARA + 1, COL_PARA).Value
-    TARGET_PATH = Cells(ROW_PARA + 2, COL_PARA).Value
+    TARGET_PATH = Init_Path(Cells(ROW_PARA + 2, COL_PARA).Value)
     HEADERS_JS = TypeJS()
     TYPE_JS = HeadersJS()
     Set FSO = New clsFSO
 End Sub
+
+Function Init_Path(path As String) As String
+    Dim ret As String: ret = path
+    
+    If Left(path, 3) = "..\" Then
+        ret = ThisWorkbook.path & "\" & Mid(path, 4): End If
+    
+    Init_Path = ret
+End Function
+
 
 Private Function HeadersJS() As Long
     HeadersJS = "0"

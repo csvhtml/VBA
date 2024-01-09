@@ -17,10 +17,10 @@ End Sub
 
 Private Sub BuildMainSheet()
 
-    AddSheetIfNotExists (SHEET_RUN)
-    Worksheets(SHEET_RUN).Activate
-    Sheets(SHEET_RUN).Range(Cells(1, 1), Cells(100, 100)).Value = ""
-    Sheets(SHEET_RUN).Range("B1").Select
+    AddSheetIfNotExists (EGO_SHT_NAME)
+    Worksheets(EGO_SHT_NAME).Activate
+    Sheets(EGO_SHT_NAME).Range(Cells(1, 1), Cells(100, 100)).Value = ""
+    Sheets(EGO_SHT_NAME).Range("B1").Select
     ActiveSheet.Hyperlinks.Add Anchor:=Selection, Address:="", SubAddress:= _
         "run!B1", TextToDisplay:="Create JSON File"
     
@@ -50,9 +50,9 @@ Private Sub BuildMainSheet()
     For i = 1 To UBound(sheetContent, 1)
         For j = 1 To UBound(sheetContent, 2)
             If InStrRev(sheetContent(i, j), "=") Then
-                Sheets(SHEET_RUN).Cells(i, j).FormulaR1C1 = sheetContent(i, j)
+                Sheets(EGO_SHT_NAME).Cells(i, j).FormulaR1C1 = sheetContent(i, j)
             Else
-                Sheets(SHEET_RUN).Cells(i, j).Value = sheetContent(i, j)
+                Sheets(EGO_SHT_NAME).Cells(i, j).Value = sheetContent(i, j)
             End If
         Next
     Next

@@ -246,6 +246,18 @@ Function GetLeftPart(inputText As String, endingWord As String) As String
     GetLeftPart = result
 End Function
 
+Function GetFileNameFromPath(filePath As String) As String
+    Dim lastBackslash As Integer
+    lastBackslash = InStrRev(filePath, "\")
+
+    If lastBackslash > 0 Then
+        GetFileNameFromPath = Mid(filePath, lastBackslash + 1)
+    Else
+        GetFileNameFromPath = filePath
+    End If
+    
+End Function
+
 'via ChatGPT
 Sub AddSheetIfNotExists(sheetName As String)
     Dim ws As Worksheet
@@ -261,7 +273,23 @@ Sub AddSheetIfNotExists(sheetName As String)
     End If
 End Sub
 
-'via CchatGPT
+'via ChatGPT
+Function IsWorkbookOpen(workbookName As String) As Boolean
+    Dim wb As Workbook
+    On Error Resume Next
+    ' Attempt to set a reference to the workbook
+    Set wb = Workbooks(workbookName)
+    On Error GoTo 0
+    
+    ' Check if the workbook is open
+    If Not wb Is Nothing Then
+        IsWorkbookOpen = True
+    Else
+        IsWorkbookOpen = False
+    End If
+End Function
+
+'via ChatGPT
 Function CellPositionA1(rowNum As Long, colNum As Long) As String
     Dim colLetter As String
     colLetter = Split(Cells(1, colNum).Address, "$")(1)
@@ -281,8 +309,8 @@ Function SheetValues(sht As Worksheet) As Variant
 End Function
 
 Function SheetFormulas(sht As Worksheet) As Variant
-    ' in case of no formula then the cell value is taken
-    
+
+    ' sht must be active
     Dim rng As Range, ret As Variant
     
     Set rng = maxRange(sht)
