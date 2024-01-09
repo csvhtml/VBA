@@ -13,10 +13,7 @@ Public TYPE_JS As String
 
 Public FSO As clsFSO
 
-Sub Init(Optional InitSheetName As String = "")
-    If InitSheetName <> "" Then
-        Sheets(InitSheetName).Activate: End If
-        
+Sub Init()
     Debug.Assert ActiveWorkbook.Name = EGO_WB_NAME
     SOURCE_FILENAME = Init_Path(Cells(ROW_PARA, COL_PARA).Value)
     SOURCE_SHEETNAME = Cells(ROW_PARA + 1, COL_PARA).Value

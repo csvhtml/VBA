@@ -11,8 +11,9 @@ Sub VBA_Export()
     clnVBAModules_BAS.Add ("bFileReader")
     clnVBAModules_BAS.Add ("bJSON")
     clnVBAModules_BAS.Add ("mMain")
-    clnVBAModules_BAS.Add ("xTest")
     clnVBAModules_BAS.Add ("xmainTest")
+    clnVBAModules_BAS.Add ("xTest")
+    clnVBAModules_BAS.Add ("zBuildSheets")
     clnVBAModules_CLS.Add ("clsFSO")
     
     For i = 1 To clnVBAModules_BAS.Count

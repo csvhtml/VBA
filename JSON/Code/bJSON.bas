@@ -23,22 +23,33 @@ Function JSONString(var As Variant, Optional ws As String = "    ") As String
 End Function
 
 Function JSONString_List(values As Variant, ws As String, Optional nthIndent As Integer = 0) As String
+    Dim arr As Variant: arr = AddQuotes(values)
 
-    Dim ret As String, wsIndent As String: ret = "": wsIndent = ""
-    If JSONString_List_Assert(values) = False Then
-        JSONString_List = "": Exit Function: End If
+    If IsArrayXD(arr, 1) Or IsArrayXD(arr, 2) Then
+        JSONString_List = JSONString_List12(arr, ws, nthIndent): End If
+
+End Function
+
+
+Function JSONString_List12(values As Variant, ws As String, Optional nthIndent As Integer = 0) As String
+    Dim ret As String, wsIndent, valueStr As String, i As Integer: ret = "": wsIndent = ""
+    
     For i = 1 To nthIndent
-        wsIndent = wsIndent + ws
-    Next
+        wsIndent = wsIndent + ws: Next
     
     ret = ret + wsIndent + "[" + NEWLINE
-    For i = LBound(values) To UBound(values)
-        ret = ret + wsIndent + ws + values(i) + "," + NEWLINE
+    For i = LBound(values, 1) To UBound(values, 1)
+        If IsArrayXD(values, 1) Then
+            valueStr = values(i)
+        Else
+            valueStr = JSONString_List12(SubListFrom2D(values, i), ws)
+        End If
+        ret = ret + wsIndent + ws + valueStr + "," + NEWLINE
     Next
-    ret = RemoveLastCharacters(ret, 2) + NEWLINE  ' = remove last comma
+    ret = RemoveLastCharacters(ret, Len("," + NEWLINE)) + NEWLINE  ' = remove last comma
     ret = ret + wsIndent + "]"
 
-    JSONString_List = ret
+    JSONString_List12 = ret
     
 End Function
 

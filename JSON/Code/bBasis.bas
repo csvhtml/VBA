@@ -65,20 +65,6 @@ Function IsNotEqual(a As Variant, b As Variant) As Boolean
 End Function
 
 
-Function ItemList(n As Integer) As Variant
-    Dim Items() As clsItem
-    ReDim Items(n)
-    Dim i As Integer
-
-    For i = 1 To 3
-        Set Items(i) = New clsItem
-        Items(i).Name = "name " & CStr(i)
-        Items(i).url = "http " & CStr(i)
-    Next i
-
-    ItemList = Items
-End Function
-
 Function UBoundX(arr As Variant, n As Integer) As Long
     UBoundX = -1
     On Error Resume Next
@@ -127,10 +113,10 @@ Function AddQuotes(var As Variant) As Variant
         str = CStr(var)
         AddQuotes = AddQuotes_ToString(str): Exit Function: End If
     
-    If LBoundX(var, 1) > -1 And LBoundX(var, 2) = -1 Then
+    If IsArrayXD(var, 1) Then
         AddQuotes = AddQuotes_ToList(var): Exit Function: End If
 
-    If LBoundX(var, 2) > -1 And LBound(var, 3) = -1 Then
+    If IsArrayXD(var, 2) Then
         Dim i, j As Integer, ret As Variant
         ReDim ret(LBound(var, 1) To UBound(var, 1), LBound(var, 2) To UBound(var, 2))
         For i = LBound(var, 1) To UBound(var, 1)

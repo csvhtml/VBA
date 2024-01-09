@@ -89,25 +89,25 @@ Function StringFromArray(arr As Variant) As String
 End Function
 
 Sub SaveSheetsAs(sourcePath As String, targetPath As String, Optional Ending As String = ".csv", Optional Delimiter As String = "|")
-    Dim ws As Worksheet
-    Dim newFileName As String
     Dim wb As Workbook, wb_name As String: wb_name = GetFileNameFromPath(sourcePath)
     Dim flag As Boolean: flag = False
     
-    If IsWorkbookOpen(wb_name) Then
-        Set wb = Workbooks(wb_name)
-    Else
+    If IsWorkbookOpen(wb_name) = False Then
         Set wb = Workbooks.Open(sourcePath)
-        flag = True
-    End If
-    wb.Activate
+        flag = True: End If
+    
+    Set wb = Workbooks(wb_name): wb.Activate
 
-    ' Loop through all sheets in the workbook
+    Dim str, newFileName As String, ws As Worksheet
     For Each ws In wb.Sheets
-        'Simple Case ###################
-        newFileName = targetPath & ws.Name & Ending
         ws.Activate
-        Call SaveStringAsTextFile(StringFromArray(SheetFormulas(ws)), newFileName)
+        If Ending = ".csv" Then
+            str = StringFromArray(SheetFormulas(ws)): End If
+        If Ending = ".json" Then
+            str = bJSON.JSONString_List(SheetFormulas(ws), "    "): End If
+            
+        newFileName = targetPath & ws.Name & Ending
+        Call SaveStringAsTextFile(str, newFileName)
     Next ws
     
     If flag Then
