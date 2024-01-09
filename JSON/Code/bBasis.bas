@@ -65,14 +65,14 @@ Function IsNotEqual(a As Variant, b As Variant) As Boolean
 End Function
 
 
-Function UBoundX(arr As Variant, n As Integer) As Long
+Function UBoundX(arr As Variant, Optional n As Integer = 1) As Long
     UBoundX = -1
     On Error Resume Next
     UBoundX = UBound(arr, n)
     On Error GoTo 0
 End Function
 
-Function LBoundX(arr As Variant, n As Integer) As Long
+Function LBoundX(arr As Variant, Optional n As Integer = 1) As Long
     LBoundX = -1
     On Error Resume Next
     LBoundX = LBound(arr, n)
@@ -145,6 +145,12 @@ Private Function AddQuotes_ToList(arr As Variant) As Variant
 End Function
 
 Function PushToArr(arr As Variant, item As Variant) As Variant
+    If LBoundX(arr) = -1 Then
+        ReDim arr(0)
+        arr(0) = item
+        PushToArr = arr
+        Exit Function: End If
+        
     Dim lastIndex As Integer
     lastIndex = UBound(arr)
     ReDim Preserve arr(lastIndex + 1)

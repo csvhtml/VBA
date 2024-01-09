@@ -88,7 +88,7 @@ Function StringFromArray(arr As Variant) As String
     StringFromArray = ret
 End Function
 
-Sub SaveSheetsAs(sourcePath As String, targetPath As String, Optional Ending As String = ".csv", Optional Delimiter As String = "|")
+Sub SaveSheetsAs(sourcePath As String, targetPath As String, Optional Ending As String = ".csv", Optional Delimiter As String = "|", Optional SingleFileOutput As Boolean = False)
     Dim wb As Workbook, wb_name As String: wb_name = GetFileNameFromPath(sourcePath)
     Dim flag As Boolean: flag = False
     
@@ -98,18 +98,30 @@ Sub SaveSheetsAs(sourcePath As String, targetPath As String, Optional Ending As 
     
     Set wb = Workbooks(wb_name): wb.Activate
 
-    Dim str, newFileName As String, ws As Worksheet
+    Dim str, strSingle, newFileName As String, keys As Variant, values As Variant, ws As Worksheet: strSingle = ""
     For Each ws In wb.Sheets
         ws.Activate
         If Ending = ".csv" Then
             str = StringFromArray(SheetFormulas(ws)): End If
         If Ending = ".json" Then
             str = bJSON.JSONString_List(SheetFormulas(ws), "    "): End If
-            
-        newFileName = targetPath & ws.Name & Ending
-        Call SaveStringAsTextFile(str, newFileName)
+        
+        If SingleFileOutput Then
+            strSingle = strSingle + str
+            keys = bBasis.PushToArr(keys, ws.Name)
+            values = bBasis.PushToArr(values, str)
+        Else
+            newFileName = targetPath & ws.Name & Ending
+            Call SaveStringAsTextFile(str, newFileName)
+        End If
     Next ws
     
+    If SingleFileOutput Then
+        keys = bBasis.AddQuotes(keys)
+        strSingle = bJSON.JSONString_Dict(keys, values, "    ")
+        newFileName = targetPath & GetLeftPart(wb.Name, ".xls") & Ending
+        Call SaveStringAsTextFile(strSingle, newFileName): End If
+        
     If flag Then
         wb.Close: End If
 End Sub

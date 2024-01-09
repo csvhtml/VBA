@@ -1,4 +1,23 @@
 Attribute VB_Name = "xmainTest"
+Sub mainSaveSheetsAsJSON_003()
+    'Prepare test
+    Dim wb As Workbook: Set wb = ThisWorkbook
+    Dim sht As Worksheet: Set sht = ActiveSheet
+    Dim vals() As String: vals = RememberValues
+    
+    Cells(ROW_PARA, COL_PARA).Value = "..\Test\003\test-003.xlsx"
+    Cells(ROW_PARA + 2, COL_PARA).Value = "..\Test\003\"
+    Call Init
+    
+    'Call Function to be tested
+    Call bFileReader.SaveSheetsAs(SOURCE_FILENAME, TARGET_PATH, ".json", , True)
+    
+    ' bring back old condition
+    wb.Activate
+    sht.Activate
+    Call SetValues(vals)
+End Sub
+
 Sub mainSaveSheetsAsJSON_002()
     'Prepare test
     Dim wb As Workbook: Set wb = ThisWorkbook

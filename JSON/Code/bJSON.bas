@@ -65,10 +65,10 @@ Function JSONString_Dict(keys As Variant, values As Variant, ws As String, Optio
     Next
     
     ret = ret + wsIndent + "{" + NEWLINE
-    For i = 1 To UBound(keys)
+    For i = LBound(keys) To UBound(keys)
         ret = ret + wsIndent + ws + keys(i) + ": " + values(i) + "," + NEWLINE
     Next
-    ret = RemoveLastCharacters(ret, 2) + NEWLINE  ' = remove last comma
+    ret = RemoveLastCharacters(ret, Len("," + NEWLINE)) + NEWLINE  ' = remove last comma
     ret = ret + wsIndent + "}"
 
     JSONString_Dict = ret
@@ -92,13 +92,12 @@ End Function
 Function JSONString_Dict_Assert(keys As Variant, values As Variant) As Boolean
     JSONString_Dict_Assert = False
     
-    If LBoundX(values, 2) > -1 Or LBoundX(keys, 2) > -1 Then
+    If Not (bBasis.IsArrayXD(keys, 1) And bBasis.IsArrayXD(values, 1)) Then
+        Exit Function: End If
+     
+    If LBoundX(values, 1) <> LBoundX(keys, 1) Then
         Exit Function: End If
         
-    If LBoundX(keys, 1) <> 1 Then
-        Exit Function: End If
-    If LBoundX(values, 1) <> 1 Then
-        Exit Function: End If
     If UBoundX(values, 1) <> UBoundX(keys, 1) Then
         Exit Function: End If
 
