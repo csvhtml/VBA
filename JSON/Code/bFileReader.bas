@@ -126,6 +126,42 @@ Sub SaveSheetsAs(sourcePath As String, targetPath As String, Optional Ending As 
         wb.Close: End If
 End Sub
 
+Sub SaveSheetsFormat(sourcePath As String, targetPath As String, Optional SingleFileOutput As Boolean = False)
+    Dim wb As Workbook, wb_name As String: wb_name = GetFileNameFromPath(sourcePath)
+    Dim Ending As String: Ending = ".json"
+    Dim flag As Boolean: flag = False
+    
+    If IsWorkbookOpen(wb_name) = False Then
+        Set wb = Workbooks.Open(sourcePath)
+        flag = True: End If
+    
+    Set wb = Workbooks(wb_name): wb.Activate
+
+    Dim str, strSingle, newFileName As String, keys As Variant, values As Variant, ws As Worksheet: strSingle = ""
+    For Each ws In wb.Sheets
+        ws.Activate
+        str = bJSON.JSONString_List(bBasis.RowHeights, "    ")
+        
+        If SingleFileOutput Then
+            strSingle = strSingle + str
+            keys = bBasis.PushToArr(keys, ws.Name)
+            values = bBasis.PushToArr(values, str)
+        Else
+            newFileName = targetPath & ws.Name & " - format" & Ending
+            Call SaveStringAsTextFile(str, newFileName)
+        End If
+    Next ws
+    
+    If SingleFileOutput Then
+        keys = bBasis.AddQuotes(keys)
+        strSingle = bJSON.JSONString_Dict(keys, values, "    ")
+        newFileName = targetPath & GetLeftPart(wb.Name, ".xls") & " - format" & Ending
+        Call SaveStringAsTextFile(strSingle, newFileName): End If
+        
+    If flag Then
+        wb.Close: End If
+End Sub
+
 
 '######################################################################################
 ' Test                                                                                #

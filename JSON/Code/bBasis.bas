@@ -317,6 +317,24 @@ Function SheetFormulas(sht As Worksheet) As Variant
     SheetFormulas = ret
 End Function
 
+Function RowHeights(Optional fromRow As String = 1, Optional toRow As Integer = 1) As Variant
+    Dim ws As Worksheet: Set ws = ActiveSheet
+    Dim ret As Variant
+    Dim fromN, toN, i As Integer
+    
+    fromN = fromRow
+    If toRow = 1 Then
+        toN = maxRange(ActiveSheet).row + maxRange(ActiveSheet).Count: End If
+
+    ReDim ret(fromN To toN)
+
+    For i = LBound(ret) To UBound(ret)
+        ret(i) = ws.Rows(i).RowHeight
+    Next i
+
+    RowHeights = ret
+End Function
+
 
 Function maxx(a, b) As Long
     maxx = a
